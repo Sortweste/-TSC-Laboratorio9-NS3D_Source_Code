@@ -77,3 +77,14 @@ float calculateLocalVolume(int i,mesh m){
     return Ve;
 
 }
+
+void ubicarSubMatriz(Matrix &K,int fi,int ff,int ci,int cf,Matrix M){
+    int n = 0, m= 0;
+    for(int i=fi;i<=ff;i++){
+        for(int j=ci;j<=cf;j++){
+            K.at(i).at(j) = M.at(n).at(m);
+            m++;
+        }
+        n++; m = 0;
+    }
+}
