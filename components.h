@@ -99,7 +99,7 @@ void calculateOmega(Matrix &C){
 }
 
 
-void calculateGamma(Matrix& m){
+void calculateGamma(Matrix &m){
 	zeroes(m,12,3);
 
     float e = 1/24;
@@ -208,27 +208,24 @@ Matrix createLocalM(int e,mesh &m){
     return M;
 }
 
-/*void createLocalF(){
+void calculateF(Vector &f){
+    zeroes(f,3);
+
+    f.at(0) = m.getParameter(EXTERNAL_FORCE_X);
+    f.at(1) = m.getParameter(EXTERNAL_FORCE_Y);
+    f.at(2) = m.getParameter(EXTERNAL_FORCE_Z);
 
 }
 
 Vector createLocalb(int e,mesh &m){
-    Vector b0,b,f;
+    Vector b,f;
     Matrix g_matrix;
 
-    float f_x = m.getParameter(EXTERNAL_FORCE_X);
-    float f_y = m.getParameter(EXTERNAL_FORCE_Y);
-    float J = calculateLocalJ(e,m);
+    calculateF(f);
     calculateGamma(g_matrix);
-    zeroes(f,2);
-    f.at(0) = f_x;
-    f.at(1) = f_y;
-
-    zeroes(b0,6);
-    productMatrixVector(g_matrix,f,b0);
-    productRealVector(J/6,b0,b);
-    b.push_back(0); b.push_back(0); b.push_back(0);
-
+    
+    zeroes(b,16);
+    productMatrixVector(g_matrix,f,b);
+    
     return b;
 }
-*/
