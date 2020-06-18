@@ -9,9 +9,9 @@ typedef vector<float> Vector;
 typedef vector<Vector> Matrix;
 
 void showMatrix(Matrix K){
-    for(int i=0;i<K.at(0).size();i++){
+    for(int i=0;i<K.size();i++){
         cout << "[\t";
-        for(int j=0;j<K.size();j++){
+        for(int j=0;j<K.at(0).size();j++){
             cout << K.at(i).at(j) << "\t";
         }
         cout << "]\n";

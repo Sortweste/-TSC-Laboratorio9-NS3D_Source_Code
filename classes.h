@@ -130,7 +130,7 @@ class condition: public item{
 };
 
 class mesh{
-        float parameters[5];
+        float parameters[6];
         int sizes[3];
         node *node_list;
         element *element_list;
@@ -181,6 +181,6 @@ class mesh{
             return element_list[i];
         }
         condition getCondition(int i, int type){
-            if(type == DIRICHLET) return dirichlet_list[i];
+            return dirichlet_list[i];
         }
 };

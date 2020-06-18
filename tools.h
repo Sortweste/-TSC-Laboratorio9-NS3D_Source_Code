@@ -8,22 +8,22 @@ void obtenerDatos(istream &file,int nlines,int n,int mode,item* item_list){
 
     for(int i=0;i<n;i++){
         switch(mode){
-        case INT_FLOAT:
-            int e0; float condition_value;
-            file >> e0 >> condition_value;
-            item_list[i].setValues(0,0,0,0,0,e0,condition_value,0);
-            break;
-        case INT_FLOAT_FLOAT_FLOAT:
-            int e; float node1, node2, node3;
-            file >> e >> node1 >> node2 >> node3;
-            item_list[i].setValues(e,node1,node2,node3,0,0,0,0);
-            break;
-        case INT_INT_INT_INT_INT:
-            int element,e1,e2,e3,e4;
-            file >> element >> e1 >> e2 >> e3 >> e4;
-            item_list[i].setValues(element,0,0,0,e1,e2,e3,e4);
-            break;
-        }
+            case INT_FLOAT:
+                int e0; float condition_value;
+                file >> e0 >> condition_value;
+                item_list[i].setValues(0,0,0,0,0,e0,condition_value,0);
+                break;
+            case INT_FLOAT_FLOAT_FLOAT:
+                int e; float node1, node2, node3;
+                file >> e >> node1 >> node2 >> node3;
+                item_list[i].setValues(e,node1,node2,node3,0,0,0,0);
+                break;
+            case INT_INT_INT_INT_INT:
+                int element,e1,e2,e3,e4;
+                file >> element >> e1 >> e2 >> e3 >> e4;
+                item_list[i].setValues(element,0,0,0,e1,e2,e3,e4);
+                break;
+            }
     }
 }
 
@@ -39,9 +39,9 @@ void correctConditions(int n,condition *list,int *indices){
     }
 }
 
-void addExtension(char *newfilename,char *filename,char *extension){
+void addExtension(char *newfilename,char *filename, string extension){
     int ori_length = strlen(filename);
-    int ext_length = strlen(extension);
+    int ext_length = extension.length();
     int i;
     for(i=0;i<ori_length;i++)
         newfilename[i] = filename[i];

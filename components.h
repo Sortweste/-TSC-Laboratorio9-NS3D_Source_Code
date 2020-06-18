@@ -102,20 +102,21 @@ void calculateOmega(Matrix &C){
 void calculateGamma(Matrix &m){
 	zeroes(m,12,3);
 
-    float e = 1/24;
+    float e = 1.0/24;
+
 
 	m.at(0).at(0) = e;   m.at(0).at(1) = 0;   m.at(0).at(2) = 0;
 	m.at(1).at(0) = e;   m.at(1).at(1) = 0;   m.at(1).at(2) = 0; 
     m.at(2).at(0) = e;   m.at(2).at(1) = 0;   m.at(2).at(2) = 0;
 	m.at(3).at(0) = e;   m.at(3).at(1) = 0;   m.at(3).at(2) = 0; 
-    m.at(4).at(0) = 1;   m.at(4).at(1) = e;   m.at(4).at(2) = 0;
-	m.at(5).at(0) = 1;   m.at(5).at(1) = e;   m.at(5).at(2) = 0; 
-    m.at(6).at(0) = 1;   m.at(6).at(1) = e;   m.at(6).at(2) = 0;
-	m.at(7).at(0) = 1;   m.at(7).at(1) = e;   m.at(7).at(2) = 0; 
-    m.at(8).at(0) = 1;   m.at(8).at(1) = 0;   m.at(8).at(2) = e;
-	m.at(9).at(0) = 1;   m.at(9).at(1) = 0;   m.at(9).at(2) = e; 
-    m.at(10).at(0) = 1;  m.at(10).at(1) = 0;  m.at(10).at(2) = e;
-	m.at(11).at(0) = 1;  m.at(11).at(1) = 0;  m.at(11).at(2) = e; 
+    m.at(4).at(0) = 0;   m.at(4).at(1) = e;   m.at(4).at(2) = 0;
+	m.at(5).at(0) = 0;   m.at(5).at(1) = e;   m.at(5).at(2) = 0; 
+    m.at(6).at(0) = 0;   m.at(6).at(1) = e;   m.at(6).at(2) = 0;
+	m.at(7).at(0) = 0;   m.at(7).at(1) = e;   m.at(7).at(2) = 0; 
+    m.at(8).at(0) = 0;   m.at(8).at(1) = 0;   m.at(8).at(2) = e;
+	m.at(9).at(0) = 0;   m.at(9).at(1) = 0;   m.at(9).at(2) = e; 
+    m.at(10).at(0) = 0;  m.at(10).at(1) = 0;  m.at(10).at(2) = e;
+	m.at(11).at(0) = 0;  m.at(11).at(1) = 0;  m.at(11).at(2) = e; 
 	
 }
 
@@ -173,6 +174,7 @@ Matrix createLocalM(int e,mesh &m){
     calculateBeta(Beta);
     productRealMatrix(u_bar*J/Determinant, productMatrixMatrix(g_matrix,productMatrixMatrix(Alpha,Beta,3,3,12),12,3,12),matrixA);
 
+
     //Matrix K
     Matrix Alpha_t,Beta_t;
 
@@ -208,7 +210,7 @@ Matrix createLocalM(int e,mesh &m){
     return M;
 }
 
-void calculateF(Vector &f){
+void calculateF(Vector &f, mesh &m){
     zeroes(f,3);
 
     f.at(0) = m.getParameter(EXTERNAL_FORCE_X);
@@ -221,11 +223,12 @@ Vector createLocalb(int e,mesh &m){
     Vector b,f;
     Matrix g_matrix;
 
-    calculateF(f);
+    calculateF(f, m);
     calculateGamma(g_matrix);
     
     zeroes(b,16);
     productMatrixVector(g_matrix,f,b);
     
+
     return b;
 }
