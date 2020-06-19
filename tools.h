@@ -70,7 +70,7 @@ void fusionDirichlet(int n1,condition* list1,int n2,condition* list2,int n3,cond
     addArray(&index,n4,list4,list);
 }
 
-void leerMallayCondiciones(mesh &m,char *filename){
+void leerMallaYCondiciones(mesh &m,char *filename){
     char inputfilename[150];
     ifstream file;
     float u_bar,nu,rho,f_x,f_y,f_z;

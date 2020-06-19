@@ -3,11 +3,7 @@ float calculateLocalD(int i,mesh m){
     Vector row1, row2, row3;
 
     element e = m.getElement(i);
-    node n1 = m.getNode(e.getNode1()-1);
-    node n2 = m.getNode(e.getNode2()-1);
-    node n3 = m.getNode(e.getNode3()-1);
-    node n4 = m.getNode(e.getNode4()-1);
-
+    
     row1.push_back(calcularTenedor(e, EQUIS, 2, 1, m));
     row1.push_back(calcularTenedor(e, YE, 2, 1, m));
     row1.push_back(calcularTenedor(e, ZETA, 2, 1, m));
@@ -28,13 +24,9 @@ float calculateLocalD(int i,mesh m){
 }
 
 void calculateAlpha(int i,Matrix &A,mesh m){
-    zeroes(A,3,3);
+    zeroes(A,3);
     element e = m.getElement(i);
     
-    node n1 = m.getNode(e.getNode1()-1);
-    node n2 = m.getNode(e.getNode2()-1);
-    node n3 = m.getNode(e.getNode3()-1);
-
     A.at(0).at(0) = OperarRestaTenedor(e, YE, ZETA, 3, 4, m);
     A.at(0).at(1) = OperarRestaTenedor(e, YE, ZETA, 4, 2, m);
     A.at(0).at(2) = OperarRestaTenedor(e, YE, ZETA, 2, 3, m);
@@ -125,11 +117,7 @@ float calculateLocalJ(int i,mesh m){
     Vector row1, row2, row3;
 
     element e = m.getElement(i);
-    node n1 = m.getNode(e.getNode1()-1);
-    node n2 = m.getNode(e.getNode2()-1);
-    node n3 = m.getNode(e.getNode3()-1);
-    node n4 = m.getNode(e.getNode4()-1);
-
+    
     row1.push_back(calcularTenedor(e, EQUIS, 2, 1, m));
     row1.push_back(calcularTenedor(e, EQUIS, 3, 1, m));
     row1.push_back(calcularTenedor(e, EQUIS, 4, 1, m));
@@ -192,13 +180,13 @@ Matrix createLocalM(int e,mesh &m){
     
     rho = m.getParameter(DENSITY);
     calculateOmega(Omega);
-    productRealMatrix(1/(rho*Determinant),productMatrixMatrix(g_matrix,productMatrixMatrix(Alpha,Omega,3,3,4),12,3,4),matrixG);
+    productRealMatrix(1.0/(rho*Determinant),productMatrixMatrix(g_matrix,productMatrixMatrix(Alpha,Omega,3,3,4),12,3,4),matrixG);
 
     //Matrix D
     Matrix g_matrix_t,Omega_t;
     transpose(Omega, Omega_t);
     transpose(g_matrix,g_matrix_t);
-    productRealMatrix(1/Determinant,productMatrixMatrix(Omega_t,productMatrixMatrix(Alpha_t,g_matrix_t,3,3,12),4,3,12),matrixD);
+    productRealMatrix(1.0/Determinant,productMatrixMatrix(Omega_t,productMatrixMatrix(Alpha_t,g_matrix_t,3,3,12),4,3,12),matrixD);
 
     //Matrix M
     Matrix M;

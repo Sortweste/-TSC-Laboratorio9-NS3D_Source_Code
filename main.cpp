@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
          << "*********************************************************************************\n\n";
 
     mesh m;
-    leerMallayCondiciones(m,filename);
+    leerMallaYCondiciones(m,filename);
     
     crearSistemasLocales(m,localKs,localbs);
     

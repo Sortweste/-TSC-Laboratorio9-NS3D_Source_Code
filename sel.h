@@ -316,10 +316,11 @@ void assemblyb(element e,Vector localb,Vector &b,int nnodes){
     int index11 = index3 + 2*nnodes;
     int index12 = index4 + 2*nnodes;    
 
-    int index13  = index1 + 3*nnodes;
+    int index13 = index1 + 3*nnodes;
     int index14 = index2 + 3*nnodes;
     int index15 = index3 + 3*nnodes;
     int index16 = index4 + 3*nnodes;    
+
 
     b.at(index1) += localb.at(0);
     b.at(index2) += localb.at(1);
@@ -337,5 +338,6 @@ void assemblyb(element e,Vector localb,Vector &b,int nnodes){
     b.at(index14) += localb.at(13);
     b.at(index15) += localb.at(14);
     b.at(index16) += localb.at(15);
+
 }
 

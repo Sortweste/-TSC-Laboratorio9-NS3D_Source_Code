@@ -24,7 +24,6 @@ void applyDirichlet(mesh &m,Matrix &K,Vector &b){
 }
 
 void calculate(Matrix &K, Vector &b, Vector &T){
-    cout << "Iniciando calculo de respuesta...\n";
     Matrix Kinv;
     cout << "Calculo de inversa...\n";
     inverseMatrix(K,Kinv);
