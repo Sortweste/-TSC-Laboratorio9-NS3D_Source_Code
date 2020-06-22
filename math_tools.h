@@ -93,14 +93,14 @@ void productRealMatrix(float real,Matrix M,Matrix &R){
 }
 
 void getMinor(Matrix &M,int i, int j){
-    //cout << "Calculando menor ("<<i+1<<","<<j+1<<")...\n";
     M.erase(M.begin()+i);
     for(int i=0;i<M.size();i++)
         M.at(i).erase(M.at(i).begin()+j);
 }
 
 float determinant(Matrix M){
-    if(M.size() == 1) return M.at(0).at(0);
+    if(M.size() == 1) 
+        return M.at(0).at(0);
     else{
         float det=0.0;
         for(int i=0;i<M.at(0).size();i++){
@@ -117,7 +117,6 @@ void cofactors(Matrix M, Matrix &Cof){
     zeroes(Cof,M.size());
     for(int i=0;i<M.size();i++){
         for(int j=0;j<M.at(0).size();j++){
-            //cout << "Calculando cofactor ("<<i+1<<","<<j+1<<")...\n";
             Matrix minor;
             copyMatrix(M,minor);
             getMinor(minor,i,j);

@@ -14,14 +14,14 @@ void obtenerDatos(istream &file,int nlines,int n,int mode,item* item_list){
                 item_list[i].setValues(0,0,0,0,0,e0,condition_value,0);
                 break;
             case INT_FLOAT_FLOAT_FLOAT:
-                int e; float node1, node2, node3;
-                file >> e >> node1 >> node2 >> node3;
-                item_list[i].setValues(e,node1,node2,node3,0,0,0,0);
+                int e; float coord1, coord2, coord3;
+                file >> e >> coord1 >> coord2 >> coord3;
+                item_list[i].setValues(e,coord1,coord2,coord3,0,0,0,0);
                 break;
             case INT_INT_INT_INT_INT:
-                int element,e1,e2,e3,e4;
-                file >> element >> e1 >> e2 >> e3 >> e4;
-                item_list[i].setValues(element,0,0,0,e1,e2,e3,e4);
+                int element,node1,node2,node3,node4;
+                file >> element >> node1 >> node2 >> node3 >> node4;
+                item_list[i].setValues(element,0,0,0,node1,node2,node3,node4);
                 break;
             }
     }
@@ -83,8 +83,8 @@ void leerMallaYCondiciones(mesh &m,char *filename){
     file >> u_bar >> nu >> rho >> f_x >> f_y >> f_z;
     
     file >> nnodes >> neltos >> ndirich_u >> ndirich_v >> ndirich_w >> ndirich_p;
-    
-    m.setParameters(u_bar,nu,rho,f_x,f_y, f_z);
+
+    m.setParameters(u_bar,nu,rho,f_x,f_y,f_z);
     m.setSizes(nnodes,neltos,ndirich_u+ndirich_v+ndirich_w+ndirich_p);
     m.createData();
 
@@ -107,7 +107,7 @@ void leerMallaYCondiciones(mesh &m,char *filename){
     correctIndices(ndirich_p,dirichlet_p,3*nnodes);
 
     fusionDirichlet(ndirich_u,dirichlet_u,ndirich_v,dirichlet_v,ndirich_w,dirichlet_w,ndirich_p,dirichlet_p,m.getDirichlet());
-
+    
     correctConditions(ndirich_u+ndirich_v+ndirich_w+ndirich_p,m.getDirichlet(),m.getDirichletIndices());
 }
 

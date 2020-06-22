@@ -38,6 +38,7 @@ void calculateAlpha(int i,Matrix &A,mesh m){
     A.at(2).at(0) = OperarRestaTenedor(e, EQUIS, YE, 3, 4, m);
     A.at(2).at(1) = OperarRestaTenedor(e, EQUIS, YE, 4, 2, m);
     A.at(2).at(2) = OperarRestaTenedor(e, EQUIS, YE, 2, 3, m);
+
 }
 
 void calculateBeta(Matrix &B){
@@ -94,21 +95,18 @@ void calculateOmega(Matrix &C){
 void calculateGamma(Matrix &m){
 	zeroes(m,12,3);
 
-    float e = 1.0/24;
-
-
-	m.at(0).at(0) = e;   m.at(0).at(1) = 0;   m.at(0).at(2) = 0;
-	m.at(1).at(0) = e;   m.at(1).at(1) = 0;   m.at(1).at(2) = 0; 
-    m.at(2).at(0) = e;   m.at(2).at(1) = 0;   m.at(2).at(2) = 0;
-	m.at(3).at(0) = e;   m.at(3).at(1) = 0;   m.at(3).at(2) = 0; 
-    m.at(4).at(0) = 0;   m.at(4).at(1) = e;   m.at(4).at(2) = 0;
-	m.at(5).at(0) = 0;   m.at(5).at(1) = e;   m.at(5).at(2) = 0; 
-    m.at(6).at(0) = 0;   m.at(6).at(1) = e;   m.at(6).at(2) = 0;
-	m.at(7).at(0) = 0;   m.at(7).at(1) = e;   m.at(7).at(2) = 0; 
-    m.at(8).at(0) = 0;   m.at(8).at(1) = 0;   m.at(8).at(2) = e;
-	m.at(9).at(0) = 0;   m.at(9).at(1) = 0;   m.at(9).at(2) = e; 
-    m.at(10).at(0) = 0;  m.at(10).at(1) = 0;  m.at(10).at(2) = e;
-	m.at(11).at(0) = 0;  m.at(11).at(1) = 0;  m.at(11).at(2) = e; 
+	m.at(0).at(0) = 1;   m.at(0).at(1) = 0;   m.at(0).at(2) = 0;
+	m.at(1).at(0) = 1;   m.at(1).at(1) = 0;   m.at(1).at(2) = 0; 
+    m.at(2).at(0) = 1;   m.at(2).at(1) = 0;   m.at(2).at(2) = 0;
+	m.at(3).at(0) = 1;   m.at(3).at(1) = 0;   m.at(3).at(2) = 0; 
+    m.at(4).at(0) = 0;   m.at(4).at(1) = 1;   m.at(4).at(2) = 0;
+	m.at(5).at(0) = 0;   m.at(5).at(1) = 1;   m.at(5).at(2) = 0; 
+    m.at(6).at(0) = 0;   m.at(6).at(1) = 1;   m.at(6).at(2) = 0;
+	m.at(7).at(0) = 0;   m.at(7).at(1) = 1;   m.at(7).at(2) = 0; 
+    m.at(8).at(0) = 0;   m.at(8).at(1) = 0;   m.at(8).at(2) = 1;
+	m.at(9).at(0) = 0;   m.at(9).at(1) = 0;   m.at(9).at(2) = 1; 
+    m.at(10).at(0) = 0;  m.at(10).at(1) = 0;  m.at(10).at(2) = 1;
+	m.at(11).at(0) = 0;  m.at(11).at(1) = 0;  m.at(11).at(2) = 1; 
 	
 }
 
@@ -157,10 +155,12 @@ Matrix createLocalM(int e,mesh &m){
         exit(EXIT_FAILURE);
     }
     
+    float real_a = (float) (u_bar*J)/(24*Determinant);
+    
     calculateGamma(g_matrix);
     calculateAlpha(e,Alpha,m);
     calculateBeta(Beta);
-    productRealMatrix(u_bar*J/Determinant, productMatrixMatrix(g_matrix,productMatrixMatrix(Alpha,Beta,3,3,12),12,3,12),matrixA);
+    productRealMatrix(real_a, productMatrixMatrix(g_matrix,productMatrixMatrix(Alpha,Beta,3,3,12),12,3,12),matrixA);
 
 
     //Matrix K
@@ -169,24 +169,30 @@ Matrix createLocalM(int e,mesh &m){
     nu = m.getParameter(DYNAMIC_VISCOSITY);
     Ve = calculateLocalVolume(e,m);
     
+    float real_k = (float) (nu*Ve)/(Determinant*Determinant);
+
     transpose(Alpha,Alpha_t);
     transpose(Beta,Beta_t);
 
-    productRealMatrix(nu*Ve/(Determinant*Determinant),productMatrixMatrix(Beta_t,productMatrixMatrix(Alpha_t,productMatrixMatrix(Alpha,Beta,3,3,12),3,3,12),12,3,12),matrixK);
+    productRealMatrix(real_k,productMatrixMatrix(Beta_t,productMatrixMatrix(Alpha_t,productMatrixMatrix(Alpha,Beta,3,3,12),3,3,12),12,3,12),matrixK);
 
     
     //Matrix G
     Matrix Omega;
     
     rho = m.getParameter(DENSITY);
+    float real_g = (float) (J/(24*rho*Determinant));
+
     calculateOmega(Omega);
-    productRealMatrix(1.0/(rho*Determinant),productMatrixMatrix(g_matrix,productMatrixMatrix(Alpha,Omega,3,3,4),12,3,4),matrixG);
+    productRealMatrix(real_g,productMatrixMatrix(g_matrix,productMatrixMatrix(Alpha,Omega,3,3,4),12,3,4),matrixG);
 
     //Matrix D
     Matrix g_matrix_t,Omega_t;
+    float real_d = (float)(J/(24*Determinant));
+
     transpose(Omega, Omega_t);
     transpose(g_matrix,g_matrix_t);
-    productRealMatrix(1.0/Determinant,productMatrixMatrix(Omega_t,productMatrixMatrix(Alpha_t,g_matrix_t,3,3,12),4,3,12),matrixD);
+    productRealMatrix(real_d,productMatrixMatrix(Omega_t,productMatrixMatrix(Alpha_t,g_matrix_t,3,3,12),4,3,12),matrixD);
 
     //Matrix M
     Matrix M;
@@ -201,22 +207,31 @@ Matrix createLocalM(int e,mesh &m){
 void calculateF(Vector &f, mesh &m){
     zeroes(f,3);
 
-    f.at(0) = m.getParameter(EXTERNAL_FORCE_X);
-    f.at(1) = m.getParameter(EXTERNAL_FORCE_Y);
-    f.at(2) = m.getParameter(EXTERNAL_FORCE_Z);
+    f.at(0) += m.getParameter(EXTERNAL_FORCE_X);
+    f.at(1) += m.getParameter(EXTERNAL_FORCE_Y);
+    f.at(2) += m.getParameter(EXTERNAL_FORCE_Z);
 
 }
 
 Vector createLocalb(int e,mesh &m){
-    Vector b,f;
+    float J;
+    Vector b,b_aux,f;
     Matrix g_matrix;
 
     calculateF(f, m);
-    calculateGamma(g_matrix);
-    
-    zeroes(b,16);
-    productMatrixVector(g_matrix,f,b);
-    
 
+    calculateGamma(g_matrix);
+
+    J = calculateLocalJ(e,m);
+
+    if(J == 0){
+        cout << "\n!---CATASTROPHIC FAILURE---!\n";
+        exit(EXIT_FAILURE);
+    }
+    
+    zeroes(b_aux,16);
+    productMatrixVector(g_matrix,f,b_aux);
+    productRealVector(J/24,b_aux,b);
+    
     return b;
 }

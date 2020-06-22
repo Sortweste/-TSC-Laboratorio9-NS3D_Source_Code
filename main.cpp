@@ -35,6 +35,14 @@ int main(int argc, char *argv[])
     
     applyDirichlet(m,K,b);
     
+    cout << "K Global: " << endl;
+    showMatrix(K);
+    cout << endl;
+
+    cout << "b Global: " << endl;
+    showVector(b);
+    cout << endl;
+
     zeroes(T,b.size());
     calculate(K,b,T);
 
